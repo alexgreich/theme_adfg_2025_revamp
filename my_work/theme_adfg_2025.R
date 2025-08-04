@@ -9,18 +9,23 @@ library(tidyverse)
 library(adfgcolors)
 
 
+
 #what has been done:
 # Theme cowplot adjusted -------------------------------------------------- #Justin's base code
 # All AGR did was change the font to sans-serif and remove the grey background from facet_wrap.
 # updated the obsolete code
+# Sans serif font instead of serif (if someone can explain to me WHY TIMES NEW ROMAN IS NOT A BAD IDEA, I can put it back)
 
 
 ##next updates:
 # black box around single figure
 # black box around multi-figure
-#I dont think I have control over a default line width through the theme. Not sure if I care tho.
+# I dont think I have control over a default line width through the theme. Not sure if I care tho.
+# add a color option? No. 
+# legend should be inside the plot please
 
 # the theme function. Justin priest wrote the majoritiy of this and I (Alex) made tiny updates
+
 theme_adfg_2 = function (font_size = 18,
                          font_family = "sans", #times new roman is recommended but it is a serif font - which is suboptimal for dataviz. That recommendation should be revisited and I used my creative liberties to ignore it.
                          #line_size = 0.5,
@@ -32,6 +37,7 @@ theme_adfg_2 = function (font_size = 18,
                          strip.background = element_rect(fill = "grey80", color=NA),
                          strip.placement = "outside",
                          strip.text.y = element_text(angle = -90)
+                         
 )
 {
   ### cowplot STYLE only changed font to serif and legend position
@@ -194,7 +200,15 @@ library(datasets)
 data("iris")
 names(iris)
 
-ggplot(iris) + aes(x = Petal.Length, y= Petal.Width) + geom_point() +
-  geom_smooth() +
+#base plot
+(base_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width) + geom_point() +
+  #geom_smooth() +
   labs( x= "Petal length", y="Petal width") + 
-    theme_adfg_2()
+    theme_adfg_2())
+
+#color plot
+(color_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
+    #geom_smooth(group = 1, method = "lm") +
+    labs( x= "Petal length", y="Petal width") + 
+    theme_adfg_2()+
+    scale_color_adfg(palette = "logo", discrete = TRUE, useexact = TRUE))
