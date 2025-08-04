@@ -35,13 +35,24 @@ theme_adfg_2 = function (font_size = 18,
                          legend.justification = c("center"),
                          strip.background = element_rect(fill = "grey80", color=NA),
                          strip.placement = "outside",
-                         strip.text.y = element_text(angle = -90)
+                         strip.text.y = element_text(angle = -90),
+                         box = "no" #if box = "yes", it will box it
                          
 )
 {
+  
   ### cowplot STYLE only changed font to serif and legend position
   half_line <- font_size / 2
   small_size <- rel_small * font_size
+  
+  #conditional do-I-want-a-box?
+  plot_background_box <- if (box == "yes") {
+    element_rect(color = "black", fill = NA, linewidth = 0.5)
+  } else {
+    element_blank()
+  }
+  
+  #the main theme adjustment
   theme_grey(base_size = font_size, base_family = font_family) %+replace%
     theme(
       strip.background = element_rect(fill = NA, color = NA), #AGR added
@@ -162,7 +173,8 @@ theme_adfg_2 = function (font_size = 18,
                                    "pt"),
       strip.switch.pad.wrap = unit(half_line / 2,
                                    "pt"),
-      plot.background = element_blank(),
+      #plot.background = element_blank(),
+      plot.background = plot_background_box, #agr added
       plot.title = element_text(
         face = "bold",
         size = rel(rel_large),
@@ -191,8 +203,9 @@ theme_adfg_2 = function (font_size = 18,
       plot.margin = margin(half_line,
                            half_line, half_line, half_line),
       complete = TRUE,
-      legend.position = legend.position,
+      legend.position = legend.position
     )
+
 }
 
 #test it
@@ -204,20 +217,24 @@ names(iris)
 (base_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width) + geom_point() +
   #geom_smooth() +
   labs( x= "Petal length", y="Petal width") + 
-    theme_adfg_2())
+    theme_adfg_2(box = "yes"))
 
 #color plot
 (color_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
     #geom_smooth(group = 1, method = "lm") +
     labs( x= "Petal length", y="Petal width") + 
-    theme_adfg_2(legend.position = c(0.9, 0.18))+ #move legend to a good spot
-    scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE))
+    theme_adfg_2(legend.position = c(0.9, 0.18), #move legend to a good spot
+                 box ="yes" #border
+                  )+ 
+    scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)
+)
+   
 
 #facet color plot
 (facet_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
     #geom_smooth(group = 1, method = "lm") +
     labs( x= "Petal length", y="Petal width") + 
-    theme_adfg_2()+
+    theme_adfg_2(box = "yes")+ #seems to work well with facet_wrap
     scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)+
     facet_wrap(~Species, scales = "free")+
     guides(color = "none")) #turn off legend, not needed here
@@ -225,6 +242,16 @@ names(iris)
 #fill plot
 (fill_plot <- ggplot(iris) + aes(x = Species, y= Petal.Length, fill = Species) + geom_violin() +
     labs( x= "Species", y="Frequency") + 
-    theme_adfg_2(legend.position = c(0.9, 0.2)))+ #move legend to a good spot
-    scale_fill_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)
+    theme_adfg_2(legend.position = c(0.9, 0.2), box = "yes")+ #move legend to a good spot
+    scale_fill_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE))
+
+#fill plot grey
+(fill_plot_grey <- ggplot(iris) + aes(x = Species, y= Petal.Length, fill = Species) + geom_violin() +
+    labs( x= "Species", y="Frequency") + 
+    theme_adfg_2(legend.position = c(0.9, 0.2), box = "yes")+ #move legend to a good spot
+    scale_fill_adfg(palette = "grays_bw", discrete = TRUE))
+
+#ggsave these examples:
+
+
 
