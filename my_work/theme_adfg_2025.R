@@ -1,6 +1,6 @@
 ##ADFG theme - 2025 revamp
 ## Alexandra Reich
-## building off code from other people- Justin Priest, and the OTHER GUY whose name will go there.
+## August 2025
 
 # load libraryies
 library(tidyverse)
@@ -12,18 +12,19 @@ library(adfgcolors)
 
 #what has been done:
 # Theme cowplot adjusted -------------------------------------------------- #Justin's base code
-# All AGR did was change the font to sans-serif and remove the grey background from facet_wrap.
+# changed the font to sans-serif 
+# removed the grey background from facet_wrap.
 # updated the obsolete code
+# added a wrapper box option (box = "yes)
+# added a white instead of NULL background
 
 
 ##next updates:
-# black box around single figure
-# black box around multi-figure
-# I dont think I have control over a default line width through the theme. Not sure if I care tho.
-# add a color option? No. 
-# legend should be inside the plot please
+#remove the bullshit comments
+#send WHATS NEXT email to Sara
 
-# the theme function. Justin priest wrote the majoritiy of this and I (Alex) made tiny updates
+
+# the theme function. Adapted from Justin Priest's theme_adfg. In fact, it is mostly theme_adfg code with tiny edits.
 
 theme_adfg_2 = function (font_size = 18,
                          font_family = "sans", #times new roman is recommended but it is a serif font - which is suboptimal for dataviz. That recommendation should be revisited and I used my creative liberties to ignore it.
@@ -36,7 +37,7 @@ theme_adfg_2 = function (font_size = 18,
                          strip.background = element_rect(fill = "grey80", color=NA),
                          strip.placement = "outside",
                          strip.text.y = element_text(angle = -90),
-                         box = "no" #if box = "yes", it will box it
+                         box = "no" #if box = "yes", black rectangle boarder
                          
 )
 {
@@ -47,9 +48,9 @@ theme_adfg_2 = function (font_size = 18,
   
   #conditional do-I-want-a-box?
   plot_background_box <- if (box == "yes") {
-    element_rect(color = "black", fill = NA, linewidth = 0.5)
+    element_rect(color = "black", fill = "white", linewidth = 0.5) #perhaps change from 0.5 later
   } else {
-    element_blank()
+    element_rect(fill="white", color = NA)
   }
   
   #the main theme adjustment
@@ -157,7 +158,7 @@ theme_adfg_2 = function (font_size = 18,
       panel.spacing.x = NULL,
       panel.spacing.y = NULL,
       panel.ontop = FALSE,
-      # strip.background = strip.background,# removed border color idk what this was doing AGR
+      # strip.background = strip.background, idk what this was doing AGR
       strip.text = element_text(
         size = rel(rel_small),
         margin = margin(half_line / 2, half_line /
@@ -215,13 +216,11 @@ names(iris)
 
 #base plot
 (base_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width) + geom_point() +
-  #geom_smooth() +
   labs( x= "Petal length", y="Petal width") + 
     theme_adfg_2(box = "yes"))
 
 #color plot
 (color_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
-    #geom_smooth(group = 1, method = "lm") +
     labs( x= "Petal length", y="Petal width") + 
     theme_adfg_2(legend.position = c(0.9, 0.18), #move legend to a good spot
                  box ="yes" #border
@@ -252,6 +251,10 @@ names(iris)
     scale_fill_adfg(palette = "grays_bw", discrete = TRUE))
 
 #ggsave these examples:
-
+ggsave(filename = "example_figures/base_plot.tiff", plot = base_plot, width = 8, height = 6)
+ggsave(filename = "example_figures/color_plot.tiff", plot = color_plot, width = 8, height = 6)
+ggsave(filename = "example_figures/facet_plot.tiff", plot = facet_plot, width = 10, height = 6)
+ggsave(filename = "example_figures/fill_plot.tiff", plot = fill_plot, width = 8, height = 6)
+ggsave(filename = "example_figures/fill_plot_grey.tiff", plot = fill_plot_grey, width = 8, height = 6)
 
 
