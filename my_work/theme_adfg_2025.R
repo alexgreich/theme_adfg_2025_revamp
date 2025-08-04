@@ -14,7 +14,6 @@ library(adfgcolors)
 # Theme cowplot adjusted -------------------------------------------------- #Justin's base code
 # All AGR did was change the font to sans-serif and remove the grey background from facet_wrap.
 # updated the obsolete code
-# Sans serif font instead of serif (if someone can explain to me WHY TIMES NEW ROMAN IS NOT A BAD IDEA, I can put it back)
 
 
 ##next updates:
@@ -126,7 +125,7 @@ theme_adfg_2 = function (font_size = 18,
       #legend.title.align = 0.5, DEPRECIATED!
       # legend.position = "bottom",
       # legend.position = legend.position, DEPRECIATED
-      legend.position.inside = legend.position, #correcting for depreciation
+      #legend.position.inside = legend.position, #correcting for depreciation; moving this elsewhere
       legend.direction = NULL,
       legend.justification = legend.justification,
       legend.box = NULL,
@@ -191,7 +190,8 @@ theme_adfg_2 = function (font_size = 18,
       plot.tag.position = c(0, 1),
       plot.margin = margin(half_line,
                            half_line, half_line, half_line),
-      complete = TRUE
+      complete = TRUE,
+      legend.position = legend.position,
     )
 }
 
@@ -210,5 +210,21 @@ names(iris)
 (color_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
     #geom_smooth(group = 1, method = "lm") +
     labs( x= "Petal length", y="Petal width") + 
+    theme_adfg_2(legend.position = c(0.9, 0.18))+ #move legend to a good spot
+    scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE))
+
+#facet color plot
+(facet_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
+    #geom_smooth(group = 1, method = "lm") +
+    labs( x= "Petal length", y="Petal width") + 
     theme_adfg_2()+
-    scale_color_adfg(palette = "logo", discrete = TRUE, useexact = TRUE))
+    scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)+
+    facet_wrap(~Species, scales = "free")+
+    guides(color = "none")) #turn off legend, not needed here
+
+#fill plot
+(fill_plot <- ggplot(iris) + aes(x = Species, y= Petal.Length, fill = Species) + geom_violin() +
+    labs( x= "Species", y="Frequency") + 
+    theme_adfg_2(legend.position = c(0.9, 0.2)))+ #move legend to a good spot
+    scale_fill_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)
+
