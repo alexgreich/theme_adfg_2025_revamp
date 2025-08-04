@@ -7,6 +7,7 @@ library(tidyverse)
 # install.packages("remotes") #install remotes and adfgcolors if one needs to do that.
 # remotes::install_github("justinpriest/adfgcolors")
 library(adfgcolors)
+# see https://github.com/justinpriest/adfgcolors?tab=readme-ov-file readme for color options on adfg colors
 
 
 
