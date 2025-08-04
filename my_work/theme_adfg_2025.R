@@ -14,24 +14,16 @@ library(adfgcolors)
 # All AGR did was change the font to sans-serif and remove the grey background from facet_wrap.
 # updated the obsolete code
 
-#TO UPDATE
-## changed 1: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
-####ℹ Please use the `linewidth` argument instead.
-##2: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
-####ℹ Please use the `linewidth` argument instead.
-##3: The `legend.title.align` argument of `theme()` is deprecated as of ggplot2 3.5.0.
-####ℹ Please use theme(legend.title = element_text(hjust)) instead.
-##4: A numeric `legend.position` argument in `theme()` was deprecated in ggplot2 3.5.0.
-####ℹ Please use the `legend.position.inside` argument of `theme()` instead.
 
 ##next updates:
 # black box around single figure
 # black box around multi-figure
+#I dont think I have control over a default line width through the theme. Not sure if I care tho.
 
 # the theme function. Justin priest wrote the majoritiy of this and I (Alex) made tiny updates
 theme_adfg_2 = function (font_size = 18,
                          font_family = "sans", #times new roman is recommended but it is a serif font - which is suboptimal for dataviz. That recommendation should be revisited and I used my creative liberties to ignore it.
-                         line_size = 0.5,
+                         #line_size = 0.5,
                          rel_small = 0.86 * font_size/font_size,
                          rel_tiny = 0.79 * font_size/font_size,
                          rel_large = 1.15 * font_size/font_size,
@@ -48,7 +40,7 @@ theme_adfg_2 = function (font_size = 18,
   theme_grey(base_size = font_size, base_family = font_family) %+replace%
     theme(
       strip.background = element_rect(fill = NA, color = NA), #AGR added
-      linewidth = line_size, #Agr added 8/4/25, untested
+      #linewidth = line_size, #Agr added 8/4/25, untested
       line = element_line(
         color = "black",
        # size = line_size, obsolete, use linewidth instead
@@ -59,7 +51,7 @@ theme_adfg_2 = function (font_size = 18,
         fill = NA,
         color = NA,
         #size = line_size, depreciated
-        linewidth = line_size, #agr added 8/4/25
+        #linewidth = line_size, #agr added 8/4/25
         linetype = 1
       ),
       text = element_text(
@@ -76,7 +68,7 @@ theme_adfg_2 = function (font_size = 18,
       ),
       axis.line = element_line(
         color = "black",
-        size = line_size, 
+        #size = line_size, #agr maybe turn this off next
         lineend = "square"
       ),
       axis.line.x = NULL,
@@ -92,7 +84,8 @@ theme_adfg_2 = function (font_size = 18,
       axis.text.y.right = element_text(margin = margin(l = small_size / 4),
                                        hjust = 0),
       axis.ticks = element_line(color = "black",
-                                size = line_size),
+                                #size = line_size
+                                ),
       axis.ticks.length = unit(half_line / 2,
                                "pt"),
       axis.title.x = element_text(margin = margin(t = half_line / 2),
@@ -202,5 +195,6 @@ data("iris")
 names(iris)
 
 ggplot(iris) + aes(x = Petal.Length, y= Petal.Width) + geom_point() +
+  geom_smooth() +
   labs( x= "Petal length", y="Petal width") + 
     theme_adfg_2()
