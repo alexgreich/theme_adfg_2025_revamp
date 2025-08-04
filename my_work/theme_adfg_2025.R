@@ -12,6 +12,17 @@ library(adfgcolors)
 #what has been done:
 # Theme cowplot adjusted -------------------------------------------------- #Justin's base code
 # All AGR did was change the font to sans-serif and remove the grey background from facet_wrap.
+# updated the obsolete code
+
+#TO UPDATE
+## changed 1: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+####ℹ Please use the `linewidth` argument instead.
+##2: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+####ℹ Please use the `linewidth` argument instead.
+##3: The `legend.title.align` argument of `theme()` is deprecated as of ggplot2 3.5.0.
+####ℹ Please use theme(legend.title = element_text(hjust)) instead.
+##4: A numeric `legend.position` argument in `theme()` was deprecated in ggplot2 3.5.0.
+####ℹ Please use the `legend.position.inside` argument of `theme()` instead.
 
 ##next updates:
 # black box around single figure
@@ -37,17 +48,18 @@ theme_adfg_2 = function (font_size = 18,
   theme_grey(base_size = font_size, base_family = font_family) %+replace%
     theme(
       strip.background = element_rect(fill = NA, color = NA), #AGR added
-      
+      linewidth = line_size, #Agr added 8/4/25, untested
       line = element_line(
         color = "black",
-        size = line_size,
+       # size = line_size, obsolete, use linewidth instead
         linetype = 1,
         lineend = "butt"
       ),
       rect = element_rect(
         fill = NA,
         color = NA,
-        size = line_size,
+        #size = line_size, depreciated
+        linewidth = line_size, #agr added 8/4/25
         linetype = 1
       ),
       text = element_text(
@@ -64,7 +76,7 @@ theme_adfg_2 = function (font_size = 18,
       ),
       axis.line = element_line(
         color = "black",
-        size = line_size,
+        size = line_size, 
         lineend = "square"
       ),
       axis.line.x = NULL,
@@ -111,10 +123,11 @@ theme_adfg_2 = function (font_size = 18,
       legend.key.width = NULL,
       legend.text = element_text(size = rel(rel_small)),
       legend.text.align = NULL,
-      legend.title = element_text(hjust = 0),
-      legend.title.align = 0.5,
+      legend.title = element_text(hjust = 0), #edit this to correct for the legend.title.align depreciating, if needed
+      #legend.title.align = 0.5, DEPRECIATED!
       # legend.position = "bottom",
-      legend.position = legend.position,
+      # legend.position = legend.position, DEPRECIATED
+      legend.position.inside = legend.position, #correcting for depreciation
       legend.direction = NULL,
       legend.justification = legend.justification,
       legend.box = NULL,
