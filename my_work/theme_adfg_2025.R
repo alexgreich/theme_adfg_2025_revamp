@@ -23,6 +23,7 @@ library(adfgcolors)
 ##next updates:
 #remove the bullshit comments
 #send WHATS NEXT email to Sara
+# this probs needs a README
 
 
 # the theme function. Adapted from Justin Priest's theme_adfg. In fact, it is mostly theme_adfg code with tiny edits.
