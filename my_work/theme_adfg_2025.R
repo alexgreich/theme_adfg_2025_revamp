@@ -21,9 +21,6 @@ library(adfgcolors)
 
 
 ##next updates:
-#remove the bullshit comments
-#send WHATS NEXT email to Sara
-# this probs needs a README
 
 
 # the theme function. Adapted from Justin Priest's theme_adfg. In fact, it is mostly theme_adfg code with tiny edits.
@@ -34,7 +31,7 @@ theme_adfg_2 = function (font_size = 18,
                          rel_small = 0.86 * font_size/font_size,
                          rel_tiny = 0.79 * font_size/font_size,
                          rel_large = 1.15 * font_size/font_size,
-                         legend.position= c(0.8,0.9), #"left", "right", "bottom", "top"
+                         legend.position.set= c(0.8,0.9), #"left", "right", "bottom", "top"
                          legend.justification = c("center"),
                          strip.background = element_rect(fill = "grey80", color=NA),
                          strip.placement = "outside",
@@ -206,7 +203,8 @@ theme_adfg_2 = function (font_size = 18,
       plot.margin = margin(half_line,
                            half_line, half_line, half_line),
       complete = TRUE,
-      legend.position = legend.position
+      legend.position = "inside",
+      legend.position.inside = legend.position.set #agr changed
     )
 
 }
@@ -224,7 +222,7 @@ names(iris)
 #color plot
 (color_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
     labs( x= "Petal length", y="Petal width") + 
-    theme_adfg_2(legend.position = c(0.9, 0.18), #move legend to a good spot
+    theme_adfg_2(legend.position.set = c(0.9, 0.18), #move legend to a good spot
                  box ="yes" #border
                   )+ 
     scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)
@@ -243,16 +241,17 @@ names(iris)
 #fill plot
 (fill_plot <- ggplot(iris) + aes(x = Species, y= Petal.Length, fill = Species) + geom_violin() +
     labs( x= "Species", y="Frequency") + 
-    theme_adfg_2(legend.position = c(0.9, 0.2), box = "yes")+ #move legend to a good spot
+    theme_adfg_2(legend.position.set = c(0.9, 0.2), box = "yes")+ #move legend to a good spot
     scale_fill_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE))
 
 #fill plot grey
 (fill_plot_grey <- ggplot(iris) + aes(x = Species, y= Petal.Length, fill = Species) + geom_violin() +
     labs( x= "Species", y="Frequency") + 
-    theme_adfg_2(legend.position = c(0.9, 0.2), box = "yes")+ #move legend to a good spot
+    theme_adfg_2(legend.position.set = c(0.9, 0.2), box = "yes")+ #move legend to a good spot
     scale_fill_adfg(palette = "grays_bw", discrete = TRUE))
 
 #ggsave these examples:
+dir.create("example_figures")
 ggsave(filename = "example_figures/base_plot.tiff", plot = base_plot, width = 8, height = 6)
 ggsave(filename = "example_figures/color_plot.tiff", plot = color_plot, width = 8, height = 6)
 ggsave(filename = "example_figures/facet_plot.tiff", plot = facet_plot, width = 10, height = 6)
