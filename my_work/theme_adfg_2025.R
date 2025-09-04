@@ -26,7 +26,7 @@ library(adfgcolors)
 # the theme function. Adapted from Justin Priest's theme_adfg. In fact, it is mostly theme_adfg code with tiny edits.
 
 theme_adfg_2 = function (font_size = 18,
-                         font_family = "sans", #times new roman is recommended but it is a serif font - which is suboptimal for dataviz. That recommendation should be revisited and I used my creative liberties to ignore it.
+                         font_family = "serif", #"sans", #times new roman is recommended but it is a serif font - which is suboptimal for dataviz. That recommendation should be revisited and I used my creative liberties to ignore it.
                          #line_size = 0.5,
                          rel_small = 0.86 * font_size/font_size,
                          rel_tiny = 0.79 * font_size/font_size,
@@ -229,6 +229,15 @@ names(iris)
 )
    
 
+#facet no color 
+(facet_plot_nocolor <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width) + geom_point() +
+    #geom_smooth(group = 1, method = "lm") +
+    labs( x= "Petal length", y="Petal width") + 
+    theme_adfg_2(box = "yes")+ #seems to work well with facet_wrap
+    #scale_color_adfg(palette = "bristolbay", discrete = TRUE, useexact = TRUE)+
+    facet_wrap(~Species, scales = "free")+
+    guides(color = "none"))
+
 #facet color plot
 (facet_plot <- ggplot(iris) + aes(x = Petal.Length, y= Petal.Width, color = Species) + geom_point() +
     #geom_smooth(group = 1, method = "lm") +
@@ -255,6 +264,7 @@ dir.create("example_figures")
 ggsave(filename = "example_figures/base_plot.tiff", plot = base_plot, width = 8, height = 6)
 ggsave(filename = "example_figures/color_plot.tiff", plot = color_plot, width = 8, height = 6)
 ggsave(filename = "example_figures/facet_plot.tiff", plot = facet_plot, width = 10, height = 6)
+ggsave(filename = "example_figures/facet_plot_nocolor.tiff", plot = facet_plot_nocolor, width = 10, height = 6)
 ggsave(filename = "example_figures/fill_plot.tiff", plot = fill_plot, width = 8, height = 6)
 ggsave(filename = "example_figures/fill_plot_grey.tiff", plot = fill_plot_grey, width = 8, height = 6)
 
